@@ -1,4 +1,3 @@
-
 version: '3'
 
 x-spark-common: &spark-common
@@ -6,7 +5,7 @@ x-spark-common: &spark-common
   volumes:
     - ./jobs:/opt/bitnami/spark/jobs
   networks:
-    - spark_airflow_network 
+    - spark_airflow_network
 
 x-airflow-common: &airflow-common
   build:
@@ -17,11 +16,13 @@ x-airflow-common: &airflow-common
   volumes:
     - ./jobs:/opt/airflow/jobs
     - ./dags:/opt/airflow/dags
+    - ./scripts:/opt/airflow/scripts
+    - ./data:/opt/airflow/data
 #    - ./logs:/opt/airflow/logs
   depends_on:
     - postgres
   networks:
-    - spark_airflow_network 
+    - spark_airflow_network
 
 services:
   spark-master:
@@ -51,7 +52,7 @@ services:
     ports:
       - 4040:5432
     networks:
-      - spark_airflow_network  
+      - spark_airflow_network
 
   webserver:
     <<: *airflow-common
@@ -79,8 +80,7 @@ services:
       MINIO_ROOT_PASSWORD: 20022003
     command: server /data --console-address ":9001"
     networks:
-      - spark_airflow_network  
+      - spark_airflow_network
 
 networks:
-  spark_airflow_network:
-
+   spark_airflow_network:
